@@ -12,7 +12,7 @@ interface FormResponse {
 
 const Enter: NextPage = () => {
   const { user } = useUser();
-  const { register, handleSubmit } = useForm<FormResponse>();
+  const { register, handleSubmit, reset } = useForm<FormResponse>();
   const [enter, { data, loading }] = useMutation("/api/enter");
   const onValid = (form: FormResponse) => {
     if (loading) return;
@@ -25,7 +25,9 @@ const Enter: NextPage = () => {
         router.replace("/login");
       }
     } else if (data && !data.ok) {
-      confirm(`${data.error}`);
+      if (confirm(`${data.error}`)) {
+        reset();
+      }
     }
   }, [data, router]);
   return (
